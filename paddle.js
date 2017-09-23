@@ -39,7 +39,7 @@ Paddle.prototype.eventListeners = function() {
 Paddle.prototype.movePaddle = function(context) {		// DESCRIPTION
 	// TODO: ADD DESCRIPTION
 
-	var paddleSpeed = 4;
+	var paddleSpeed = 5;
 
 	if(moveRight === true && this.paddleX < context.canvas.clientWidth - this.paddleWidth) {
 		this.paddleX += paddleSpeed;
