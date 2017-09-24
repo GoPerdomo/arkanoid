@@ -1,4 +1,4 @@
-# Arkanoid (Work in progress)
+# Arkanoid
 
 ## TODO:
 
