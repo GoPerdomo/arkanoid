@@ -7,7 +7,6 @@ function Brick(position, width, height) {		// Brick Class Constructor
 	this.brickHeight = 30;
 };
 
-
 Brick.prototype.renderBrick = function(context) {		// Renders the bricks
 	context.fillStyle = "#09fb06";
 	context.fillRect(this.brickX, this.brickY, this.brickWidth, this.brickHeight);

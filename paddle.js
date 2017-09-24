@@ -35,10 +35,7 @@ Paddle.prototype.eventListeners = function() {
 	});
 }
 
-
-Paddle.prototype.movePaddle = function(context) {		// DESCRIPTION
-	// TODO: ADD DESCRIPTION
-
+Paddle.prototype.movePaddle = function(context) {		// Checks if the user is pressing a directional key and moves the paddle on that direction
 	var paddleSpeed = 5;
 
 	if(moveRight === true && this.paddleX < context.canvas.clientWidth - this.paddleWidth) {

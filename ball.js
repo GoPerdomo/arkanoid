@@ -1,10 +1,16 @@
 'use strict'
 
 function Ball(position, radius) {		// Ball Class Constructor
+	let speed = 4;
+
 	this.ballX = position[0];
 	this.ballY = position[1];
 	this.radius = radius;
-	this.speed = [4, 4];
+	this.direction = [randomDirection(), -speed];
+
+	function randomDirection() {		// Randoms the ball's starting X direction
+		return Math.floor(Math.random() * 2) === 0 ? -speed : speed;
+	}
 };
 
 Ball.prototype.renderBall = function(context) {		// Renders the ball with the arkanoid.context as context
@@ -13,7 +19,6 @@ Ball.prototype.renderBall = function(context) {		// Renders the ball with the ar
 	context.arc(this.ballX, this.ballY, this.radius, 0, 2*Math.PI, false);
 	context.fill();
 };
-
 
 Ball.prototype.checkWallsHit = function() {		// Checks if the ball has hit a horizontal walls
 	return (this.ballX < this.radius) || (this.ballX > canvas.clientWidth-this.radius);
@@ -30,46 +35,37 @@ Ball.prototype.checkPaddle = function(paddle) {		// Checks if the ball's positio
 	return withinHorizontalRange && withinVerticalRange;
 };
 
-Ball.prototype.checkBricksHorizontalHit = function(brick) {		// DESCRIPTION
-	// TODO: ADD DESCRIPTION
-
-	var withinHorizontalRange = (this.ballX + this.radius > brick.brickX) && (this.ballX - this.radius < brick.brickX + brick.brickWidth);
-
-	return withinHorizontalRange;
+Ball.prototype.checkBricksHorizontalHit = function(brick) {		// Checks if the ball's positions is within the brick's horizontal range
+	return (this.ballX + this.radius > brick.brickX) && (this.ballX - this.radius < brick.brickX + brick.brickWidth);
 };
 
-Ball.prototype.checkBricksVerticalHit = function(brick) {		// DESCRIPTION
-	// TODO: ADD DESCRIPTION
-
-	var withinVerticalRange = (this.ballY + this.radius > brick.brickY) && (this.ballY - this.radius < brick.brickY + brick.brickHeight);
-
-	return withinVerticalRange;
+Ball.prototype.checkBricksVerticalHit = function(brick) {		// Checks if the ball's positions is within the brick's vertical range
+	return (this.ballY + this.radius > brick.brickY) && (this.ballY - this.radius < brick.brickY + brick.brickHeight);
 };
 
-Ball.prototype.moveBall = function(paddle, bricks) {		// DESCRIPTION
-	// TODO: ADD DESCRIPTION
-
+Ball.prototype.moveBall = function(paddle, bricks) {		// Moves the ball while checking it has hit a wall or a brick and, if so, changes it direction
 	if(this.checkWallsHit()) {
-		this.speed[0] = -this.speed[0];
+		this.direction[0] = -this.direction[0];
 	}
 	if(this.checkTopAndBottomHit()) {
-		this.speed[1] = -this.speed[1];
+		this.direction[1] = -this.direction[1];
 	}
 	if(this.checkPaddle(paddle)){
-		this.speed[1] = -this.speed[1];
+		this.direction[1] = -this.direction[1];
 	}
 	bricks.forEach(function(brick) {
 		if(this.checkBricksHorizontalHit(brick) && this.checkBricksVerticalHit(brick)) {
 			var brickPos = arkanoid.bricks.indexOf(brick);
 			arkanoid.bricks.splice(brickPos, 1);
+			arkanoid.score += 100;
 			if(this.checkBricksHorizontalHit(brick)) {
-				this.speed[1] = -this.speed[1];
+				this.direction[1] = -this.direction[1];
 			} else {
-				this.speed[0] = -this.speed[0];
+				this.direction[0] = -this.direction[0];
 			}
 		}
 	}.bind(this))
 
-	this.ballX += this.speed[0];
-	this.ballY += this.speed[1];
+	this.ballX += this.direction[0];
+	this.ballY += this.direction[1];
 };
