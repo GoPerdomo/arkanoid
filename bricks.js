@@ -9,7 +9,7 @@ function Brick(position, width, height) {		// Brick Class Constructor
 
 
 Brick.prototype.renderBrick = function(context) {		// Renders the bricks
-	context.fillStyle = "white";
+	context.fillStyle = "#09fb06";
 	context.fillRect(this.brickX, this.brickY, this.brickWidth, this.brickHeight);
 };
 
@@ -17,9 +17,11 @@ Brick.prototype.createBricks = function(bricks, context) {		// Creates new insta
 	var posX = 100;
 	var posY = 50;
 	var brickIndex = 0;
+	var rows = 4;
+	var colums = 8;
 
-	for(var i = 0; i < 4; i++) {
-		for(var n = 0; n < 8; n++) {
+	for(var i = 0; i < rows; i++) {
+		for(var n = 0; n < colums; n++) {
 			bricks[brickIndex] = new Brick([posX, posY]);
 			bricks[brickIndex].renderBrick(context);
 			posX += 100;
@@ -29,4 +31,3 @@ Brick.prototype.createBricks = function(bricks, context) {		// Creates new insta
 		posY += 50;
 	}
 };
-

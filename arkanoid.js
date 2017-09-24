@@ -21,9 +21,26 @@ Arkanoid.prototype.resetCanvas = function() {		// Fills the canvas with the back
 	this.context.fillRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
 };
 
+Arkanoid.prototype.ballOnBottom = function() {
+	return this.ball.ballY + this.ball.radius >= this.canvas.clientHeight;
+};
 
 Arkanoid.prototype.play = function() {		// Sets an interval to call the functions that reset the canvas, render the ball and checks for its collisions and moves the paddle
-	setInterval(function(){
+	var interval = setInterval(function(){
+		if(this.ballOnBottom()) {
+			clearInterval(interval);
+			let replay = confirm('You lose!\nPlay again?')
+			if(replay === true) {
+				window.location.reload();
+			}
+		}
+		if(this.bricks.length === 0) {
+			clearInterval(interval);
+			let replay = confirm('You win!\nPlay again?')
+			if(replay === true) {
+				window.location.reload();
+			}
+		}
 		this.resetCanvas();
 		this.ball.renderBall(this.context);
 		this.paddle.renderPaddle(this.context);
@@ -40,3 +57,4 @@ var arkanoid = new Arkanoid(canvas);		// Creates a new instance of the Arkanoid 
 
 arkanoid.resetCanvas();
 
+arkanoid.play();
