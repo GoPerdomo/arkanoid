@@ -25,7 +25,7 @@ Ball.prototype.checkTopAndBottom = function() {		// Checks if the ball vertical 
 
 Ball.prototype.checkPaddle = function(paddle) {		// Checks if the ball horizontal position is within the paddle horizontal position and if the ball vertical position is within the paddle vertival position
 	var withinHorizontalRange = (this.ballX > paddle.paddleX) && (this.ballX < paddle.paddleX + paddle.paddleWidth);
-	var withinVerticalRange = (this.ballY > paddle.paddleY - this.radius);
+	var withinVerticalRange = (this.ballY > paddle.paddleY - this.radius) && (this.ballY < paddle.paddleY + paddle.paddleHeight)
 
 	return withinHorizontalRange && withinVerticalRange;
 };
@@ -34,8 +34,19 @@ Ball.prototype.checkPaddle = function(paddle) {		// Checks if the ball horizonta
 // 	return (this.ballX > paddle.paddleX-this.radius) && (this.ballY > paddle.paddleY - this.radius);
 // };
 
+Ball.prototype.checkBricksHorizontalHit = function(brick) {
+	var withinHorizontalRange = (this.ballX + this.radius > brick.brickX) && (this.ballX - this.radius < brick.brickX + brick.brickWidth);
 
-Ball.prototype.moveBall = function(paddle) {
+	return withinHorizontalRange;
+};
+
+Ball.prototype.checkBricksVerticalHit = function(brick) {
+	var withinVerticalRange = (this.ballY + this.radius > brick.brickY) && (this.ballY - this.radius < brick.brickY + brick.brickHeight);
+
+	return withinVerticalRange;
+};
+
+Ball.prototype.moveBall = function(paddle, bricks) {
 	if(this.checkWalls()) {
 		this.speed[0] = -this.speed[0];
 	}
@@ -45,7 +56,21 @@ Ball.prototype.moveBall = function(paddle) {
 	if(this.checkPaddle(paddle)){
 		this.speed[1] = -this.speed[1];
 	}
+	bricks.forEach(function(brick) {
+		if(this.checkBricksHorizontalHit(brick) && this.checkBricksVerticalHit(brick)) {
+			var brickPos = arkanoid.bricks.indexOf(brick);
+			arkanoid.bricks.splice(brickPos, 1);
+			if(this.checkBricksHorizontalHit(brick)) {
+				this.speed[1] = -this.speed[1];
+			} else {
+				this.speed[0] = -this.speed[0];
+			}
+		}
+	}.bind(this))
 
 	this.ballX += this.speed[0];
 	this.ballY += this.speed[1];
 };
+
+
+

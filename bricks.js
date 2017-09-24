@@ -29,3 +29,4 @@ Brick.prototype.createBricks = function(bricks, context) {		// Creates new insta
 		posY += 50;
 	}
 };
+

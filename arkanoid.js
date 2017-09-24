@@ -12,7 +12,7 @@ function Arkanoid(canvas) {		// Arkanoid Class Constructor
 	this.paddle = new Paddle([this.canvas.clientWidth/2-60, this.canvas.clientHeight-20], 120, 15)
 	this.paddle.renderPaddle(this.context);
 
-	this.bricks = {};
+	this.bricks = [];
 	Brick.prototype.createBricks(this.bricks, this.context);
 };
 
@@ -32,7 +32,7 @@ Arkanoid.prototype.play = function() {		// Sets an interval to call the function
 		}
 		this.paddle.eventListeners();
 		this.paddle.movePaddle(this.context);
-		this.ball.moveBall(this.paddle);
+		this.ball.moveBall(this.paddle, this.bricks);
 	}.bind(this), 17);
 };
 
